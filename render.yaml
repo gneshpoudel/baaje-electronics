@@ -1,0 +1,25 @@
+services:
+  # Backend Service
+  - type: web
+    name: baaje-electronics-backend
+    env: python
+    buildCommand: cd backend && pip install -r requirements.txt
+    startCommand: cd backend && python server.py
+    envVars:
+      - key: JWT_SECRET
+        generateValue: true
+      - key: PORT
+        value: 8000
+      - key: HOST
+        value: 0.0.0.0
+
+  # Frontend Service
+  - type: web
+    name: baaje-electronics-frontend
+    env: static
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: ./frontend/build
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
